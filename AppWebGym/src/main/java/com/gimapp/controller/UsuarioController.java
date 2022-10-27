@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.gimapp.model.DatosBancarios;
 import com.gimapp.model.FichaUser;
 import com.gimapp.model.Tarifas;
+import com.gimapp.repository.IDatosBancariosRepository;
 import com.gimapp.repository.ITarifasRepository;
 import com.gimapp.repository.IUserRepository;
 
@@ -32,6 +34,9 @@ public class UsuarioController {
 	@Autowired
 	private ITarifasRepository tarifaRepository;
 	
+	@Autowired
+	private IDatosBancariosRepository datosBancariosRepository;
+	
 	//una forma de ir mostrando lo que hace el logg, en vez de usar un System.out.println()
 	private final org.slf4j.Logger logg = LoggerFactory.getLogger(FichaUser.class);
 	
@@ -47,31 +52,33 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/tarifas") //http:localhot:8080/gimnasio/tarifas
-	public String create(Model model) {
+	public String tarifas(Model model) {
 		model.addAttribute("tarifas", tarifaRepository.findAll()); //a través del repository traemos todos las tarifas de la bbdd y lo guardamos en la variable tarifas
 		return "tarifas";
 	}
 	
+	@GetMapping("/datosBancarios") //http:localhot:8080/gimnasio/tarifas
+	public String datosBancarios(Model model) {
+		model.addAttribute("datos", datosBancariosRepository.findAll());
+		return "datosBancarios";
+	}
+	
+	@GetMapping("/pago")
+	public String pago(FichaUser usuario, Model model) {
+		logg.info("Usuario que pasa a /save {}", usuario);
+		model.addAttribute("usuario", usuario);
+		return "pago";
+	}
+	
 	@PostMapping("/save") //http:localhot:8080/gimnasio/save
-	public String save(FichaUser usuario){
-		logg.info("Información del usuario, {}", usuario);
-		List<FichaUser> users = userRepository.findAll();
+	public String save(FichaUser usuario, DatosBancarios datosBancarios){	
+		datosBancariosRepository.save(datosBancarios);
+		userRepository.save(usuario);
 		
-		boolean correcto = true;
+		logg.info("Información del usuario guardado, {}", usuario);
+		logg.info("Información de los datos bancarios, {}", datosBancarios);
 		
-		for (FichaUser usr : users) {	
-            if(usuario.getEmail() == usr.getEmail()) {
-            	correcto = false;
-            }
-        }
-		System.out.println("\n\n" + correcto + "\n\n");
-		if(correcto == true) {
-			userRepository.save(usuario);
-			return "redirect:/gimnasio/bbdd";
-		}else {
-			return "create";
-		}
-		
+		return "redirect:/gimnasio/bbdd";		
 	}
 	
 	//@PathVariable nos permite definir un atributo que viene en la URL y que lo vamos a recibir
@@ -100,3 +107,25 @@ public class UsuarioController {
 	}
 	
 }
+
+//@PostMapping("/save") //http:localhot:8080/gimnasio/save
+//public String save(FichaUser usuario){
+//	logg.info("Información del usuario, {}", usuario);
+//	List<FichaUser> users = userRepository.findAll();
+//	
+//	boolean correcto = true;
+//	
+//	for (FichaUser usr : users) {	
+//        if(usuario.getEmail() == usr.getEmail()) {
+//        	correcto = false;
+//        }
+//    }
+//	System.out.println("\n\n" + correcto + "\n\n");
+//	if(correcto == true) {
+//		userRepository.save(usuario);
+//		return "redirect:/gimnasio/bbdd";
+//	}else {
+//		return "create";
+//	}
+//	
+//}

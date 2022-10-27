@@ -28,12 +28,12 @@
 			<div class="mb-3">
 				<label for="formGroupExampleInput" class="form-label">Nombre</label> 
 				<input type="text" class="form-control" name="nombre" id="formGroupExampleInput" 
-				th:value="${UsuarioEditado.nombre}" minlength="2" >
+				th:value="${UsuarioEditado.nombre}" minlength="2" pattern="^[a-zA-Z]+$">
 			</div>
 			<div class="mb-3">
 				<label for="formGroupExampleInput2" class="form-label">Apellido</label> 
 				<input type="text" class="form-control" name="apellido" id="formGroupExampleInput2" 
-				th:value="${UsuarioEditado.apellido}" minlength="2">
+				th:value="${UsuarioEditado.apellido}" minlength="2"pattern="^[a-zA-Z]+$">
 			</div>
 			<div class="mb-3">
 				<label for="formGroupExampleInput3" class="form-label">Sexo</label> <br></br>

@@ -15,7 +15,7 @@
 		<h1>darse de alta</h1>
 		
 		<!-- th:action="", le decimos donde se va después del formulario -->
-		<form th:action="@{/gimnasio/save}" method="post"> <!-- method default: GET -->
+		<form th:action="@{/gimnasio/pago}"> <!-- method default: GET -->
 		
 			<!-- con: name="" thymeleaf puede mapear la info como un objeto (el valor de name tiene que ser igual al de la variable de FichaUser -->
 			<!-- el conjunto se mappea como un objeto FichaUser, que lo enviamos al controlador -->
@@ -23,13 +23,13 @@
 			<div class="mb-3">
 				<label for="formGroupExampleInput" class="form-label">Nombre</label> 
 				<input type="text" class="form-control" name="nombre" id="formGroupExampleInput" 
-				placeholder="Nombre..." minlength="2" 
+				placeholder="Nombre..." minlength="2" pattern="^[a-zA-Z]+$" 
 				required>
 			</div>
 			<div class="mb-3">
 				<label for="formGroupExampleInput2" class="form-label">Apellido</label> 
 				<input type="text" class="form-control" name="apellido" id="formGroupExampleInput2" 
-				placeholder="Apellido..." minlength="2" 
+				placeholder="Apellido..." minlength="2" pattern="^[a-zA-Z]+$"
 				required>
 			</div>
 			
@@ -68,9 +68,8 @@
 			
 			<div class="g-recaptcha" data-sitekey="6Lc3YbYiAAAAANKTq7L03UEoJ8aUIwQgVs2P-QyH"></div>
 			<br/>
-			<input type="submit" value="Submit">
 				
-			<button type="submit" class="btn btn-success">Guardar</button>
+			<button type="submit" class="btn btn-success">Siguiente</button>
 			
 		</form>
 		

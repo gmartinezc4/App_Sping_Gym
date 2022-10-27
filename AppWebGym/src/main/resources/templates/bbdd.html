@@ -39,6 +39,9 @@
 					<td scope="row" th:text="${user.tarifa}"></td>
 					
 					<td>
+						<a th:href="@{/gimnasio/datosBancarios}" class="btn btn-danger"> ver datos bancarios </a>
+					</td>
+					<td>
 						<a th:href="@{/gimnasio/edit/{id}  (id=${user.id})  }" class="btn btn-warning"> Editar </a>
 					</td>
 					<td>
