@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Perfil</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+</head>
+<body>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+
+				<h1>Perfil</h1>
+				<form th:action="@{/gimnasio/inicioSesion/savePerfil}" method="post">
+					
+					<div class="form-group">
+						<input th:id="id" name="id" type="text" class="form-control"
+							th:value="${user.id}">
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="nombre">Nombre: </label> <input
+							th:id="nombre" name="nombre" type="text" class="form-control"
+							th:value="${user.nombre}" min="2" pattern="^[a-zA-Z]+$">
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="apellido">Apellido: </label> <input
+							th:id="apellido" name="apellido" class="form-control"
+							th:value="${user.apellido}" min="2" pattern="^[a-zA-Z]+$">
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="email">Email : </label> <input
+							id="email" type="email" name="email" class="form-control"
+							th:value="${user.email}" min="5" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}">
+					</div>
+
+					<div class="mb-3">
+						<label for="formGroupExampleInput3" class="form-label">Sexo: </label>
+						<input class="form-control" th:value="${user.sexo}" readonly>
+					</div>
+					
+					<br>
+
+					<div class="mb-3">
+						<select required class="form-selected" multiple name="sexo" >
+							<option selected th:value="${user.sexo}"></option>
+							<option value="Hombre">Hombre</option>
+							<option value="Mujer">Mujer</option>
+							<option value="Otro">Otro</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="telefono">telefono : </label> <input
+							type="tel" th:id="telefono" name="telefono"
+							class="form-control" th:value="${user.telefono}" minlength="9" maxlength="9" pattern="[0-9]+">
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="password">Password: </label> <input
+							type="password" th:id="password" name=password
+							class="form-control" th:value="${user.password}" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+							title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters">
+					</div>
+
+					<div class="mb-3">
+						<label for="formGroupExampleInput3" class="form-label">Tarifa</label>
+						<input class="form-control" th:value="${user.tarifa}" readonly>
+					</div>
+					
+					<div class="mb-3">
+							<select required class="form-selected" multiple name="tarifa" >
+								<option selected th:value="${user.tarifa}"></option>
+								<option value="Premium">Premium</option>
+								<option value="Basica">Básica</option>
+							</select>
+					</div>
+					
+					<div class="mb-3">
+						<input type="hidden" class="form-control" name="idDatosBancarios" th:value="${user.idDatosBancarios}">
+					</div>
+					
+					<br><br>
+					
+					<div class="mb-3">
+						<label for="formGroupExampleInput" class="form-label">Numero de la tarjeta: </label> 
+						<input type="text" class="form-control" name="numeroTarjeta" id="formGroupExampleInput" 
+						th:value="${datosBancarios.numeroTarjeta}" readonly>
+					</div>
+					
+					<div class="mb-3">
+						<label for="formGroupExampleInput" class="form-label">Nombre del dueño: </label> 
+						<input type="text" class="form-control" name="nombreTarjeta" id="formGroupExampleInput" 
+						th:value="${datosBancarios.nombreTarjeta}" readonly>
+					</div>
+					
+					<div class="mb-3">
+						<label for="formGroupExampleInput" class="form-label">Fecha de caducidad: </label> 
+						<input type="month" class="form-control" name="fechaCaducidad" id="formGroupExampleInput" 
+						th:value="${datosBancarios.fechaCaducidad}" readonly>
+					</div>
+					
+					<div class="mb-3">
+						<label for="formGroupExampleInput" class="form-label">CVV: </label> 
+						<input type="text" class="form-control" name="cvv" id="formGroupExampleInput" 
+						th:value="${datosBancarios.cvv}" readonly>
+					</div>
+					
+					<br>
+					<div class="form-group">
+						
+						<button type="submit" class="btn btn-success">Guardar Cambios</button>
+					</div>
+					
+					
+				</form>
+				
+				<form th:action="@{/gimnasio/inicioSesion/borrarMetodoPago}" method="post">
+				 	<br><br>
+					<button type="submit" class="btn btn-danger">Borrar Metodo de pago</button>
+				</form>
+				
+				<form th:action="@{/gimnasio/inicioSesion/darseDeBaja}" method="post">
+				 	<br><br>
+					<button type="submit" class="btn btn-danger">Darse de baja</button>
+				</form>
+			
+</body>
+</html>

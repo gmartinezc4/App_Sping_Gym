@@ -15,59 +15,37 @@
 		<h1>página de pago</h1>
 		
 		<!-- th:action="", le decimos donde se va después del formulario -->
-		<form th:action="@{/gimnasio/save}" method="post"> <!-- method default: GET -->
+		<form th:action="@{/gimnasio/inicioSesion/savePago}" method="post"> <!-- method default: GET -->
 		
 			<!-- con: name="" thymeleaf puede mapear la info como un objeto (el valor de name tiene que ser igual al de la variable de FichaUser -->
 			<!-- el conjunto se mappea como un objeto FichaUser, que lo enviamos al controlador -->
+					
 			
 			<div class="mb-3">
-				<input type="hidden" th:value="${usuario.nombre}" class="form-control" name="nombre" >
-			</div>
-			<div class="mb-3">
-				<input type="hidden" th:value="${usuario.apellido}" class="form-control" name="apellido" >
-			</div>
-			<div class="mb-3">
-				<input type="hidden" th:value="${usuario.sexo}" class="form-control" name="sexo" >
-			</div>
-			<div class="mb-3">
-				<input type="hidden" th:value="${usuario.telefono}" class="form-control" name="telefono" >
-			</div>
-			<div class="mb-3">
-				<input type="hidden" th:value="${usuario.email}" class="form-control" name="email" >
-			</div>
-			<div class="mb-3">
-				<input type="hidden" th:value="${usuario.password}" class="form-control" name="password" >
-			</div>
-			<div class="mb-3">
-				<input type="hidden" th:value="${usuario.tarifa}" class="form-control" name="tarifa" >
-			</div>
-			
-			
-			<div class="mb-3">
-				<input type="hidden" name="emailUser"  th:value="${usuario.email}">
+				<input type="hidden" name="idUser"  th:value="${usuario.id}">
 			</div>
 			<div class="mb-3">
 				<label for="formGroupExampleInput" class="form-label">Número de tarjeta</label> 
-				<input type="number" class="form-control" name="numeroTarjeta" id="formGroupExampleInput" 
-				placeholder="Numero Tarjeta..." minlength="13" maxlength="18"
+				<input type="text" class="form-control" name="numeroTarjeta" id="formGroupExampleInput" 
+				placeholder="Numero Tarjeta..." minlength="16" maxlength="16" pattern="[0-9]+"
 				required>
 			</div>
 			<div class="mb-3">
 				<label for="formGroupExampleInput2" class="form-label">Nombre del dueño</label> 
 				<input type="text" class="form-control" name="nombreTarjeta" id="formGroupExampleInput2" 
-				placeholder="Nombre Tarjeta..." minlength="2" pattern="[a-zA-Z\s]+$"
+				placeholder="Nombre Tarjeta..." minlength="5" pattern="[a-zA-Z\s]+$"
 				required>
 			</div>
 			<div class="mb-3">
 				<label for="formGroupExampleInput2" class="form-label">Fecha de caducidad</label> 
 				<input type="month" class="form-control" name="fechaCaducidad" id="formGroupExampleInput2" 
-				placeholder="Fecha de caducidad..."
+				placeholder="Fecha de caducidad..."min="2022-11" max="2026-11"
 				required>
 			</div>
 			<div class="mb-3">
 				<label for="formGroupExampleInput2" class="form-label">CVV</label> 
-				<input type="number" class="form-control" name="cvv" id="formGroupExampleInput2" 
-				placeholder="cvv..." minlength="3" maxlength="3"
+				<input type="text" class="form-control" name="cvv" id="formGroupExampleInput2" 
+				placeholder="cvv..." minlength="3" maxlength="3" pattern="[0-9]+"
 				required>
 			</div>
 			

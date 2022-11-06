@@ -1,13 +1,21 @@
 package com.gimapp.model;
 
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="usuarios")
+@Table(name="usuarios", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class FichaUser {
 
 	
@@ -21,9 +29,34 @@ public class FichaUser {
 	private String email;
 	private String password;
 	private String tarifa;
+	private Integer idDatosBancarios;
+	
+//	@ManyToMany(fetch  = FetchType.EAGER, cascade = CascadeType.ALL)
+//	@JoinTable(name = "usuarios_roles", 
+//				joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
+//				inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id")
+//			)
+//	private Collection<Rol> roles;
+//	
+
 	
 	
-	public FichaUser(String nombre, String apellido, String sexo, String telefono, String email, String contraseña, String tarifa) {
+	public FichaUser(Integer id, String nombre, String apellido, String sexo, String telefono, String email,
+			String password, String tarifa, Integer idDatosBancarios) { //Collection<Rol> roles
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.sexo = sexo;
+		this.telefono = telefono;
+		this.email = email;
+		this.password = password;
+		this.tarifa = tarifa;
+		this.idDatosBancarios = idDatosBancarios;
+	}
+
+	public FichaUser(String nombre, String apellido, String sexo, String telefono, String email, 
+			String contraseña, String tarifa, Integer idDatosBancarios) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -32,6 +65,8 @@ public class FichaUser {
 		this.email = email;
 		this.password = contraseña;
 		this.tarifa = tarifa;
+		this.idDatosBancarios = idDatosBancarios;
+
 	}
 
 	public FichaUser() {
@@ -101,6 +136,14 @@ public class FichaUser {
 
 	public void setTarifa(String tarifa) {
 		this.tarifa = tarifa;
+	}
+	
+	public Integer getIdDatosBancarios() {
+		return idDatosBancarios;
+	}
+
+	public void setIdDatosBancarios(Integer idDatosBancarios) {
+		this.idDatosBancarios = idDatosBancarios;
 	}
 
 	@Override

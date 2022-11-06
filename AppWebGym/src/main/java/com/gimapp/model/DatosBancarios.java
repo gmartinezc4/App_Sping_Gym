@@ -14,15 +14,15 @@ public class DatosBancarios {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	private String emailUser;
+	private Integer idUser;
 	private String numeroTarjeta;
 	private String nombreTarjeta;
 	private String fechaCaducidad;
 	private Integer cvv;
 	
-	public DatosBancarios(String emailUser, String numeroTarjeta, String nombreTarjeta, String fechaCaducidad, Integer cvv) {
+	public DatosBancarios(Integer idUser, String numeroTarjeta, String nombreTarjeta, String fechaCaducidad, Integer cvv) {
 		super();
-		this.emailUser = emailUser;
+		this.idUser = idUser;
 		this.numeroTarjeta = numeroTarjeta;
 		this.nombreTarjeta = nombreTarjeta;
 		this.fechaCaducidad = fechaCaducidad;
@@ -41,12 +41,12 @@ public class DatosBancarios {
 		this.id = id;
 	}
 
-	public String getEmailUser() {
-		return emailUser;
+	public Integer getIdUser() {
+		return idUser;
 	}
 
-	public void setEmailUser(String emailUser) {
-		this.emailUser = emailUser;
+	public void setIdUser(Integer idUser) {
+		this.idUser = idUser;
 	}
 
 	public String getNumeroTarjeta() {
@@ -83,7 +83,7 @@ public class DatosBancarios {
 
 	@Override
 	public String toString() {
-		return "DatosBancarios [id=" + id + ", idUser=" + emailUser + ", numeroTarjeta=" + numeroTarjeta
+		return "DatosBancarios [id=" + id + ", idUser=" + idUser + ", numeroTarjeta=" + numeroTarjeta
 				+ ", nombreTarjeta=" + nombreTarjeta + ", fechaCaducidad=" + fechaCaducidad + ", cvv=" + cvv + "]";
 	}
 	

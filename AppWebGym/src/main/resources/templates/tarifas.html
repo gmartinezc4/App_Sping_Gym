@@ -31,20 +31,14 @@
 					<td scope="row" th:text="${tarifa.appTarifa}"></td>
 					<td scope="row" th:text="${tarifa.precioTarifa}"></td>
 					<td scope="row" th:text="${tarifa.pecioInscripcion}"></td>
-					
-					<td>
-						<a th:href="@{/gimnasio/alta/{id}  (id=${tarifa.id})  }" class="btn btn-warning"> apuntarse </a>
-					</td>
-					
+				
 				</tr>
 				
 			</tbody>
 		</table>
-		
-		<td>
-			<a th:href="@{/gimnasio}" class="btn btn-warning"> Volver </a>
-		</td>
-		
+				
+		<a th:href="@{/gimnasio/registro}" class="btn btn-warning"> Volver </a>
+			
 	</div>
 </body>
 </html>

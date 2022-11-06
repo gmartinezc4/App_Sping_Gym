@@ -17,26 +17,28 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th scope="row">Número tarjeta</th>
-					<th scope="row">Nombre del propietario</th>
-					<th scope="row">fecha de caducidad</th>
-					<th scope="row">cvv</th>
-					<th scope="row">Email propietario</th>	
+					<th scope="row">Numero de la tarjeta: </th>
+					<th scope="row">Nombre del propietario: </th>
+					<th scope="row">Fecha de caducidad: </th>
+					<th scope="row">CVV: </th>	
 				</tr>
 			</thead>
 			<tbody>
-					<tr th:each="datos: ${datos}"> <!-- bucle para recorrer la variable productos -->
-						<td scope="row" th:text="${datos.numeroTarjeta}"></td>
-						<td scope="row" th:text="${datos.nombreTarjeta}"></td>
-						<td scope="row" th:text="${datos.fechaCaducidad}"></td>
-						<td scope="row" th:text="${datos.cvv}"></td>
-						<td scope="row" th:text="${datos.emailUser}"></td>			
-					</tr>
+				
+				<tr th:each="datos: ${datosBancarios}"> <!-- bucle para recorrer la variable productos -->
+					
+					<td scope="row" th:text="${datos.numeroTarjeta}"></td>
+					<td scope="row" th:text="${datos.nombreTarjeta}"></td>
+					<td scope="row" th:text="${datos.fechaCaducidad}"></td>
+					<td scope="row" th:text="${datos.cvv}"></td>
+				
+				</tr>
+				
 			</tbody>
 		</table>
 		
 		<td>
-			<a th:href="@{/gimnasio}" class="btn btn-warning"> Volver </a>
+			<a th:href="@{/gimnasio/admin/bbdd}" class="btn btn-warning"> Volver </a>
 		</td>
 		
 	</div>
