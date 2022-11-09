@@ -31,11 +31,6 @@ public class RegistroUserController {
 		return new FichaUser();
 	}
 	
-	@GetMapping("")
-	public String mostrarPaginaInicial() {
-		return "homeIniciadaSesionUser";
-	}
-	
 	@GetMapping("/register")
 	public String mostrarFormularioRegistro() {
 		return "registro";

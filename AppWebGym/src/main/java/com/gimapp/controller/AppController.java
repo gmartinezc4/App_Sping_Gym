@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.gimapp.model.DatosBancarios;
 import com.gimapp.model.FichaUser;
 import com.gimapp.model.Tarifas;
+import com.gimapp.repository.IClasesGymRepository;
 import com.gimapp.repository.IDatosBancariosRepository;
 import com.gimapp.repository.ITarifasRepository;
 import com.gimapp.repository.IUserRepository;
@@ -28,9 +29,18 @@ public class AppController {
 
 	//instanciamos la interface, a trabes de este objeto vamos a poder usar todos los metodos de JpaRepository
 	
+	@Autowired
+	private IClasesGymRepository clasesGymRepository;
+	
 	@GetMapping("") //cuando yo llame a la raiz me muestra lo de aqui (raiz --> http:localhost:8080/gimnasio)
 	public String home() {	
 		return "home"; //nombre del archivo html que va a devolver
+	} 
+	
+	@GetMapping("/clases") //cuando yo llame a la raiz me muestra lo de aqui (raiz --> http:localhost:8080/gimnasio)
+	public String verClases(Model model) {	
+		model.addAttribute("clasesGym", clasesGymRepository.findAll());
+		return "clasesGymBbdd"; //nombre del archivo html que va a devolver
 	} 
 
 }

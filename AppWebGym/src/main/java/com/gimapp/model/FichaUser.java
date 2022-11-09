@@ -66,7 +66,6 @@ public class FichaUser {
 		this.password = contraseña;
 		this.tarifa = tarifa;
 		this.idDatosBancarios = idDatosBancarios;
-
 	}
 
 	public FichaUser() {
@@ -137,7 +136,7 @@ public class FichaUser {
 	public void setTarifa(String tarifa) {
 		this.tarifa = tarifa;
 	}
-	
+
 	public Integer getIdDatosBancarios() {
 		return idDatosBancarios;
 	}

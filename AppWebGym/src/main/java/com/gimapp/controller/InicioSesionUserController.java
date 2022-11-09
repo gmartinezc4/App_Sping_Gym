@@ -1,21 +1,24 @@
 package com.gimapp.controller;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.gimapp.model.BbddUsersClases;
+import com.gimapp.model.ClasesGym;
 import com.gimapp.model.DatosBancarios;
 import com.gimapp.model.FichaUser;
+import com.gimapp.repository.IBbddUsersClases;
+import com.gimapp.repository.IClasesGymRepository;
 import com.gimapp.repository.IDatosBancariosRepository;
 import com.gimapp.repository.ITarifasRepository;
 import com.gimapp.repository.IUserRepository;
@@ -33,8 +36,15 @@ public class InicioSesionUserController {
 	@Autowired
 	private IDatosBancariosRepository datosBancariosRepository;
 	
+	@Autowired
+	private IClasesGymRepository clasesGymRepository;
+	
+	@Autowired
+	private IBbddUsersClases bbddUserClasesRepository;
+	
 	private FichaUser usuario;
 	private DatosBancarios datosBancarios;
+	private BbddUsersClases userClases = new BbddUsersClases();
 	
 	@ModelAttribute("usuario")
 	public FichaUser newFichaUser() {
@@ -70,7 +80,7 @@ public class InicioSesionUserController {
 				datosBancarios = datosBancariosRepository.getOne(usuario.getIdDatosBancarios());
 			}
 			System.out.println("datos bancarios" + datosBancarios + "\n\n");
-			return "homeIniciadaSesionUser";
+			return "redirect:/gimnasio/inicioSesion";
 		}else {		 
 			return "redirect:/gimnasio/inicioSesion/login";
 		}
@@ -107,7 +117,7 @@ public class InicioSesionUserController {
 		usuarioRepository.save(user);
 	
 		usuario = user;
-		return "homeIniciadaSesionUser";
+		return "redirect:/gimnasio/inicioSesion";
 	}
 	
 	@GetMapping("/tarifas") //http:localhot:8080/gimnasio/tarifas
@@ -157,5 +167,69 @@ public class InicioSesionUserController {
 		
 		return "redirect:/gimnasio";
 	}
+	
+	@GetMapping("/clasesUser")
+	public String verClasesUser(Model model) {
+		model.addAttribute("clasesGym", clasesGymRepository.findAll());
+		return "clasesGymUsuario";
+	}
+	
+	@GetMapping("/apuntarseClase/{id}")
+	public String apuntarseClase(@PathVariable Integer id) {		
+		
+		//si no tiene tarifa asignada o metodo de pago
+		if(usuario.getTarifa() != null || usuario.getIdDatosBancarios() != null) {
+			userClases.setIdClase(id);
+			userClases.setIdUser(usuario.getId());
+			
+			List<BbddUsersClases> bbddUserClases = bbddUserClasesRepository.findAll();
+			
+			for(BbddUsersClases c: bbddUserClases) {
+				//si ya esta apuntado a esa clase
+				if(c.getIdClase().equals(id) && c.getIdUser().equals(usuario.getId())) {
+					return "redirect:/gimnasio/inicioSesion/clasesUser";
+				}
+			}
+			
+			bbddUserClasesRepository.save(userClases);
+			userClases = new BbddUsersClases();
+			return "redirect:/gimnasio/inicioSesion/misClases";
+		}else {
+			return "redirect:/gimnasio/inicioSesion/clasesUser";
+		}	
+	}
+	
+	@GetMapping("/misClases")
+	public String verMisClases(Model model) {
+		List<ClasesGym> clases = clasesGymRepository.findAll();
+		List<BbddUsersClases> bbddUserClases = bbddUserClasesRepository.findAll();
+		
+		ArrayList<ClasesGym> misClases = new ArrayList<ClasesGym>();
+	
+		for(BbddUsersClases c: bbddUserClases) {
+			if(c.getIdUser().equals(usuario.getId())) {
+				for(ClasesGym cg: clases) {
+					if(cg.getId().equals(c.getIdClase())) {
+						misClases.add(cg);
+					}
+				}
+			}
+		}
 
+		model.addAttribute("misClasesGym", misClases);
+		return "misClasesUser";
+	}
+	
+	@GetMapping("/darseDeBajaClase/{id}")
+	public String borrarseDeClase(@PathVariable Integer id) {
+		List<BbddUsersClases> bbddUserClases = bbddUserClasesRepository.findAll();
+		
+		for(BbddUsersClases c: bbddUserClases) {
+			if(c.getIdClase().equals(id))
+				bbddUserClasesRepository.deleteById(c.getId());
+		}
+		
+		return "redirect:/gimnasio/inicioSesion/misClases";
+	}
+	
 }

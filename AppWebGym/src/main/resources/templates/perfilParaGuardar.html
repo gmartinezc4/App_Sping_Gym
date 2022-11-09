@@ -25,7 +25,7 @@
 				<form th:action="@{/gimnasio/inicioSesion/savePerfil}" method="post">
 					
 					<div class="form-group">
-						<input th:id="id" name="id" type="text" class="form-control"
+						<input th:id="id" name="id" type="hidden" class="form-control"
 							th:value="${user.id}">
 					</div>
 					<div class="form-group">
