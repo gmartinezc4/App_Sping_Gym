@@ -74,18 +74,16 @@
 							class="form-control" th:value="${user.password}" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
 							title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters">
 					</div>
-
-					<div class="mb-3">
-						<label for="formGroupExampleInput3" class="form-label">Tarifa</label>
-						<input class="form-control" th:value="${user.tarifa}" readonly>
+					
+					<div class="form-group">
+						<label class="control-label" for="tarifa">Tarifa: </label> <input
+							type="text" th:id="nombreTarifa" name="nombreTarifa"
+							class="form-control" th:value="${tarifa.nombreTarifa}" readonly>
 					</div>
 					
-					<div class="mb-3">
-							<select required class="form-selected" multiple name="tarifa" >
-								<option selected th:value="${user.tarifa}"></option>
-								<option value="Premium">Premium</option>
-								<option value="Basica">Básica</option>
-							</select>
+					<br>
+					<div class="form-group">
+						<a th:href="@{/gimnasio/inicioSesion/tarifas}"class="btn btn-success">Cambiar tarifa</a>
 					</div>
 					
 					<div class="mb-3">
@@ -95,7 +93,7 @@
 					<br><br>
 					
 					<div class="mb-3">
-						<label for="formGroupExampleInput" class="form-label">Numero de la tarjeta: </label> 
+						<label for="formGroupExampleInput" class="form-label">Número de la tarjeta: </label> 
 						<input type="text" class="form-control" name="numeroTarjeta" id="formGroupExampleInput" 
 						th:value="${datosBancarios.numeroTarjeta}" readonly>
 					</div>
@@ -116,11 +114,10 @@
 						<label for="formGroupExampleInput" class="form-label">CVV: </label> 
 						<input type="text" class="form-control" name="cvv" id="formGroupExampleInput" 
 						th:value="${datosBancarios.cvv}" readonly>
-					</div>
+					</div>				
 					
 					<br>
 					<div class="form-group">
-						
 						<button type="submit" class="btn btn-success">Guardar Cambios</button>
 					</div>
 					

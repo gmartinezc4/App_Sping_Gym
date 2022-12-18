@@ -32,10 +32,18 @@
 					<td scope="row" th:text="${tarifa.precioTarifa}"></td>
 					<td scope="row" th:text="${tarifa.pecioInscripcion}"></td>
 
+					<td>
+						<a th:href="@{/gimnasio/admin/modificarTarifa/{id} (id=${tarifa.id}) }" class="btn btn-warning"> Editar </a>
+					</td>
+					<td>
+						<a th:href="@{/gimnasio/admin/eliminarTarifa/{id} (id=${tarifa.id}) }" class="btn btn-danger"> Eliminar </a>
+					</td>
 				</tr>
 			
 			</tbody>
 		</table>
+		
+		<a th:href="@{/gimnasio/admin/añadirTarifa}" class="btn btn-primary"> Añadir tarifa </a>
 		
 		<a th:href="@{/gimnasio/admin}" class="btn btn-warning"> Volver </a>
 		

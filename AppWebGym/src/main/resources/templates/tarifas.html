@@ -32,6 +32,9 @@
 					<td scope="row" th:text="${tarifa.precioTarifa}"></td>
 					<td scope="row" th:text="${tarifa.pecioInscripcion}"></td>
 				
+					<td>
+						<a th:href="@{/gimnasio/inicioSesion/contratarTarifa/{id} (id=${tarifa.id}) }" class="btn btn-warning"> Contratar </a>
+					</td>
 				</tr>
 				
 			</tbody>

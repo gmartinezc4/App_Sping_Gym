@@ -12,7 +12,7 @@
 <body>
 
 	<div class="container">
-		<h1>base de datros de usuarios</h1>
+		<h1>base de datos de usuarios</h1>
 		
 		<table class="table">
 			<thead>
@@ -23,11 +23,9 @@
 					<th scope="col">Sexo</th>
 					<th scope="col">Telefono</th>
 					<th scope="col">Email</th>	
-					<th scope="col">Tarifa</th>	
 				</tr>
 			</thead>
 			<tbody>
-				
 				<tr th:each="user: ${fichaUser}"> <!-- bucle para recorrer la variable productos -->
 					
 					<td scope="row" th:text="${user.id}"></td>
@@ -36,11 +34,19 @@
 					<td scope="row" th:text="${user.sexo}"></td>
 					<td scope="row" th:text="${user.telefono}"></td>
 					<td scope="row" th:text="${user.email}"></td>
-					<td scope="row" th:text="${user.tarifa}"></td>
+					
+					<td>
+						<a th:href="@{/gimnasio/admin/verTarifasUser/{id} (id=${user.id}) }" class="btn btn-success"> tarifa </a>
+					</td>
+					
+					<td>
+						<a th:href="@{/gimnasio/admin/verClases/{id} (id=${user.id}) }" class="btn btn-success"> clases </a>
+					</td>
 					
 					<td th:if="${user.idDatosBancarios != null}">
 						<a th:href="@{/gimnasio/admin/datosBancarios/{id} (id=${user.id}) }" class="btn btn-primary"> ver datos bancarios </a>
 					</td>
+					
 					<td>
 						<a th:href="@{/gimnasio/admin/delete/{id}  (id=${user.id})  }" class="btn btn-danger"> Eliminar </a>
 					</td>

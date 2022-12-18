@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.gimapp.model.FichaUser;
 
 //Repository hace que:
-//Interfaz encargada de realizar los cambios, en este caso los cambios de Producto (como guardar, modificar o eliminar)
+//Interfaz encargada de realizar los cambios, en este caso los cambios del usuarioa (como guardar, modificar o eliminar)
 //Se conecta a la bbdd y gestiona la info
 
 @Repository

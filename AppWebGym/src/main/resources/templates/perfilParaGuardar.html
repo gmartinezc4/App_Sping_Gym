@@ -74,19 +74,6 @@
 							class="form-control" th:value="${user.password}" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
 							title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters">
 					</div>
-
-					<div class="mb-3">
-						<label for="formGroupExampleInput3" class="form-label">Tarifa</label>
-						<input class="form-control" th:value="${user.tarifa}" readonly>
-					</div>
-					
-					<div class="mb-3">
-							<select required class="form-selected" multiple name="tarifa" >
-								<option selected th:value="${user.tarifa}"></option>
-								<option value="Premium">Premium</option>
-								<option value="Basica">Básica</option>
-							</select>
-					</div>
 					
 					<div class="mb-3">
 						<input type="hidden" class="form-control" name="idDatosBancarios" th:value="${user.idDatosBancarios}">
@@ -96,6 +83,6 @@
 						
 						<button type="submit" class="btn btn-success">Guardar Cambios</button>
 					</div>
-			
+			</form>
 </body>
 </html>

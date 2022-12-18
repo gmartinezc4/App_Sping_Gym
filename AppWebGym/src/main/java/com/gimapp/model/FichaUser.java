@@ -28,21 +28,11 @@ public class FichaUser {
 	private String telefono;
 	private String email;
 	private String password;
-	private String tarifa;
 	private Integer idDatosBancarios;
-	
-//	@ManyToMany(fetch  = FetchType.EAGER, cascade = CascadeType.ALL)
-//	@JoinTable(name = "usuarios_roles", 
-//				joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
-//				inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id")
-//			)
-//	private Collection<Rol> roles;
-//	
-
 	
 	
 	public FichaUser(Integer id, String nombre, String apellido, String sexo, String telefono, String email,
-			String password, String tarifa, Integer idDatosBancarios) { //Collection<Rol> roles
+			String password, Integer idDatosBancarios) { //Collection<Rol> roles
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -51,12 +41,11 @@ public class FichaUser {
 		this.telefono = telefono;
 		this.email = email;
 		this.password = password;
-		this.tarifa = tarifa;
 		this.idDatosBancarios = idDatosBancarios;
 	}
 
 	public FichaUser(String nombre, String apellido, String sexo, String telefono, String email, 
-			String contraseña, String tarifa, Integer idDatosBancarios) {
+			String contraseña, Integer idDatosBancarios) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -64,7 +53,6 @@ public class FichaUser {
 		this.telefono = telefono;
 		this.email = email;
 		this.password = contraseña;
-		this.tarifa = tarifa;
 		this.idDatosBancarios = idDatosBancarios;
 	}
 
@@ -129,14 +117,6 @@ public class FichaUser {
 		this.password = contraseña;
 	}
 	
-	public String getTarifa() {
-		return tarifa;
-	}
-
-	public void setTarifa(String tarifa) {
-		this.tarifa = tarifa;
-	}
-
 	public Integer getIdDatosBancarios() {
 		return idDatosBancarios;
 	}

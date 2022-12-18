@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.gimapp.model.BbddUsersClases;
+import com.gimapp.model.BbddUsersTarifas;
 import com.gimapp.model.ClasesGym;
 import com.gimapp.model.DatosBancarios;
 import com.gimapp.model.FichaUser;
+import com.gimapp.model.Tarifas;
 import com.gimapp.repository.IBbddUsersClases;
+import com.gimapp.repository.IBbddUsersTarifas;
 import com.gimapp.repository.IClasesGymRepository;
 import com.gimapp.repository.IDatosBancariosRepository;
 import com.gimapp.repository.ITarifasRepository;
@@ -42,9 +45,14 @@ public class InicioSesionUserController {
 	@Autowired
 	private IBbddUsersClases bbddUserClasesRepository;
 	
+	@Autowired
+	private IBbddUsersTarifas bbddUserTarifasRepository;
+	
 	private FichaUser usuario;
 	private DatosBancarios datosBancarios;
+	private Tarifas tarifaUser;
 	private BbddUsersClases userClases = new BbddUsersClases();
+	private BbddUsersTarifas userTarifas = new BbddUsersTarifas();
 	
 	@ModelAttribute("usuario")
 	public FichaUser newFichaUser() {
@@ -78,8 +86,16 @@ public class InicioSesionUserController {
 		if(coincide == true) {
 			if(usuario.getIdDatosBancarios() != null) {
 				datosBancarios = datosBancariosRepository.getOne(usuario.getIdDatosBancarios());
+				System.out.println("datos Bancarios" + datosBancarios + "\n\n");
+				
+				List<BbddUsersTarifas> bbddUserTarifas = bbddUserTarifasRepository.findAll();		
+				for(BbddUsersTarifas t: bbddUserTarifas) {
+					if(t.getIdUser().equals(usuario.getId())) {
+						tarifaUser = tarifaRepository.getOne(t.getIdTarifa());
+						System.out.println("datos Bancarios" + tarifaUser + "\n\n");
+					}
+				}
 			}
-			System.out.println("datos bancarios" + datosBancarios + "\n\n");
 			return "redirect:/gimnasio/inicioSesion";
 		}else {		 
 			return "redirect:/gimnasio/inicioSesion/login";
@@ -94,12 +110,12 @@ public class InicioSesionUserController {
 	@GetMapping("/perfil")
 	public String mostrarPerfil(Model model) {
 		model.addAttribute("user", usuario);
-		model.addAttribute("tarifas", tarifaRepository.findAll());
 		
 		if(usuario.getIdDatosBancarios() == null) {
 			return "perfil";
 		}else {
 			model.addAttribute("datosBancarios", datosBancarios);
+			model.addAttribute("tarifa", tarifaUser);
 			return "perfilConBanco";
 		}
 	}
@@ -126,16 +142,39 @@ public class InicioSesionUserController {
 		return "tarifas";
 	}
 	
-	@GetMapping("/metodoPago")
-	public String añadirMetodoPago(Model model) {
+	@GetMapping("/contratarTarifa/{id}") //http:localhot:8080/gimnasio/tarifas
+	public String tarifaContratada(@PathVariable Integer id, Model model) {
+		List<BbddUsersTarifas> bbddUserTarifas = bbddUserTarifasRepository.findAll();
+		tarifaUser = tarifaRepository.getOne(id);
+		System.out.println("tarifa" + tarifaUser + "\n\n");
+
+		for(BbddUsersTarifas t: bbddUserTarifas) {
+			if(t.getIdTarifa().equals(id) && t.getIdUser().equals(usuario.getId())) {
+				return "redirect:/gimnasio/inicioSesion/tarifas";
+			}else if(!(t.getIdTarifa().equals(id)) && t.getIdUser().equals(usuario.getId()) && datosBancarios != null){
+				t.setIdTarifa(id);
+				bbddUserTarifasRepository.save(t);
+				model.addAttribute("user", usuario);
+
+				return "perfilParaGuardar";
+			}
+		}
+		
+		userTarifas.setIdTarifa(id);
+		userTarifas.setIdUser(usuario.getId());
+		
 		model.addAttribute("usuario", usuario);
 		return "pago";
 	}
 	
 	@PostMapping("/savePago")
 	public String guardarMetodoPago(DatosBancarios datos, Model model) {
-		model.addAttribute("user", usuario);		
-		datosBancariosRepository.save(datos);	
+		model.addAttribute("user", usuario);
+		model.addAttribute("tarifa", tarifaUser);
+		
+		datosBancariosRepository.save(datos);
+		
+		bbddUserTarifasRepository.save(userTarifas);
 		
 		usuario.setIdDatosBancarios(datos.getId());
 		usuarioRepository.save(usuario);
@@ -154,31 +193,52 @@ public class InicioSesionUserController {
 		usuario.setIdDatosBancarios(null);
 		usuarioRepository.save(usuario);
 		
-		return "perfil";
-	}
+		//borrar sus clases de bbdd --> clases_gym_usuarios
+		List<BbddUsersClases> bbddUserClases = bbddUserClasesRepository.findAll();
 	
-	@PostMapping("/darseDeBaja")
-	public String darseDeBaja() {
-		usuarioRepository.deleteById(usuario.getId());
-		
-		if(usuario.getIdDatosBancarios() != null) {
-			datosBancariosRepository.deleteById(usuario.getIdDatosBancarios());
+		for(BbddUsersClases c: bbddUserClases) {
+			if(c.getIdUser().equals(usuario.getId())) {
+				bbddUserClasesRepository.deleteById(c.getId());
+			}
 		}
+		userClases = new BbddUsersClases();
 		
-		return "redirect:/gimnasio";
+		//borrar sus tarifas de bbdd --> tarifas_gym_usuarios
+		List<BbddUsersTarifas> bbddUserTarifas = bbddUserTarifasRepository.findAll();
+		
+		for(BbddUsersTarifas t: bbddUserTarifas) {
+			if(t.getIdUser().equals(usuario.getId())) {
+				bbddUserTarifasRepository.deleteById(t.getId());
+			}
+		}
+		userTarifas = new BbddUsersTarifas();
+		
+		
+		return "perfil";
 	}
 	
 	@GetMapping("/clasesUser")
 	public String verClasesUser(Model model) {
 		model.addAttribute("clasesGym", clasesGymRepository.findAll());
+		model.addAttribute("user", usuario);
+		
 		return "clasesGymUsuario";
 	}
 	
 	@GetMapping("/apuntarseClase/{id}")
 	public String apuntarseClase(@PathVariable Integer id) {		
+		//comprobamos si el usuario tiene una tarifa contratada
+		boolean tieneTarifa = false;
+		List<BbddUsersTarifas> tarifasUsers = bbddUserTarifasRepository.findAll();
+		
+		for(BbddUsersTarifas t: tarifasUsers) {
+			if(t.getIdUser().equals(usuario.getId())) {
+				tieneTarifa = true;
+			}
+		}
 		
 		//si no tiene tarifa asignada o metodo de pago
-		if(usuario.getTarifa() != null || usuario.getIdDatosBancarios() != null) {
+		if(tieneTarifa == true || usuario.getIdDatosBancarios() != null) {
 			userClases.setIdClase(id);
 			userClases.setIdUser(usuario.getId());
 			
@@ -230,6 +290,54 @@ public class InicioSesionUserController {
 		}
 		
 		return "redirect:/gimnasio/inicioSesion/misClases";
+	} 
+	
+	@GetMapping("/cerrarSesion")
+	public String cerrarSesion() {
+		usuario = null;
+		datosBancarios = null;
+		tarifaUser = null;
+		userClases = new BbddUsersClases();
+		userTarifas = new BbddUsersTarifas();
+		
+		return "redirect:/gimnasio";
+	}
+	
+	@PostMapping("/darseDeBaja")
+	public String darseDeBaja() {
+		usuarioRepository.deleteById(usuario.getId());
+		
+		//borrar el metodo de pago si lo tiene
+		if(usuario.getIdDatosBancarios() != null) {
+			datosBancariosRepository.deleteById(usuario.getIdDatosBancarios());;
+		
+			//borrar sus clases de bbdd --> clases_gym_usuarios
+			List<BbddUsersClases> bbddUserClases = bbddUserClasesRepository.findAll();
+		
+			for(BbddUsersClases c: bbddUserClases) {
+				if(c.getIdUser().equals(usuario.getId())) {
+					bbddUserClasesRepository.deleteById(c.getId());
+				}
+			}
+			
+			//borrar sus tarifas de bbdd --> tarifas_gym_usuarios
+			List<BbddUsersTarifas> bbddUserTarifas = bbddUserTarifasRepository.findAll();
+			
+			for(BbddUsersTarifas t: bbddUserTarifas) {
+				if(t.getIdUser().equals(usuario.getId())) {
+					bbddUserTarifasRepository.deleteById(t.getId());
+				}
+			}
+			
+		}
+		
+		usuario = null;
+		datosBancarios = null;
+		tarifaUser = null;
+		userClases = new BbddUsersClases();
+		userTarifas = new BbddUsersTarifas();
+		
+		return "redirect:/gimnasio";
 	}
 	
 }
