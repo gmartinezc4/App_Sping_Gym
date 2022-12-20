@@ -1,0 +1,45 @@
+<!DOCTYPE html> 
+<html xmlns:th="https://www.thymeLeaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Tarifas</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+</head>
+<body>
+	
+	<div class="container">
+		<h1>Tarifas</h1>
+	
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="row">Nombre</th>
+					<th scope="row">Acceso a la app</th>
+					<th scope="row">Precio</th>
+					<th scope="row">Precio Inscripción</th>	
+				</tr>
+			</thead>
+			<tbody>
+				
+				<tr th:each="tarifa: ${tarifa}"> <!-- bucle para recorrer la variable productos -->
+					
+					<td scope="row" th:text="${tarifa.nombreTarifa}"></td>
+					<td scope="row" th:text="${tarifa.appTarifa}"></td>
+					<td scope="row" th:text="${tarifa.precioTarifa}"></td>
+					<td scope="row" th:text="${tarifa.pecioInscripcion}"></td>
+
+				</tr>
+			
+			</tbody>
+		</table>
+		
+		<a th:href="@{/gimnasio/admin/bbdd}" class="btn btn-warning"> Volver </a>
+		
+		
+	</div>
+</body>
+</html>
