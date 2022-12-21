@@ -12,6 +12,12 @@
 <body>
 
 	<div class="container">
+		
+		<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+			th:text="${mensaje}"
+			class="alert">
+		</div>
+		
 		<h1>Clases del Gimnasio</h1>
 		
 		<table class="table">

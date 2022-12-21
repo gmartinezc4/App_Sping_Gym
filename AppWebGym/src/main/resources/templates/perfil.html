@@ -20,6 +20,11 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
+				
+				<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+				     th:text="${mensaje}"
+				     class="alert">
+				</div>
 
 				<h1>Perfil</h1>
 				<form th:action="@{/gimnasio/inicioSesion/savePerfil}" method="post">

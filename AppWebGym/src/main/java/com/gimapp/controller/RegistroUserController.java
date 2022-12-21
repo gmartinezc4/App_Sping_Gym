@@ -49,13 +49,23 @@ public class RegistroUserController {
 		}
 		
 		if(coincide == false) {
-			usuarioRepositoy.save(user);
-			logg.info("user {}", user.getNombre());
-			usuario = user;
-			logg.info("user {}", usuario.getNombre());
-			return "home";
+			if(user.getPassword().toString().equals(user.getPasswordRepeat())) {
+				usuarioRepositoy.save(user);
+				logg.info("user {}", user.getNombre());
+				usuario = user;
+				logg.info("user {}", usuario.getNombre());
+				return "home";
+			}else {
+				redirectAttrs
+	            .addFlashAttribute("mensaje", "Las contraseñas no coinciden")
+	            .addFlashAttribute("clase", "success");
+			return "redirect:/gimnasio/registro/register";
+			}	
 		}else {		 
-			return "registro";
+			 redirectAttrs
+	            .addFlashAttribute("mensaje", "Ya existe un usuario con ese email")
+	            .addFlashAttribute("clase", "success");
+			return "redirect:/gimnasio/registro/register";
 		}	
 	}
 }

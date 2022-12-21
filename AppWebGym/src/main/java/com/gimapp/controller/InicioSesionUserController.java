@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gimapp.model.BbddUsersClases;
 import com.gimapp.model.BbddUsersTarifas;
@@ -143,13 +144,16 @@ public class InicioSesionUserController {
 	}
 	
 	@GetMapping("/contratarTarifa/{id}") //http:localhot:8080/gimnasio/tarifas
-	public String tarifaContratada(@PathVariable Integer id, Model model) {
+	public String tarifaContratada(@PathVariable Integer id, Model model, RedirectAttributes redirectAttrs) {
 		List<BbddUsersTarifas> bbddUserTarifas = bbddUserTarifasRepository.findAll();
 		tarifaUser = tarifaRepository.getOne(id);
 		System.out.println("tarifa" + tarifaUser + "\n\n");
 
 		for(BbddUsersTarifas t: bbddUserTarifas) {
 			if(t.getIdTarifa().equals(id) && t.getIdUser().equals(usuario.getId())) {
+				redirectAttrs
+	            .addFlashAttribute("mensaje", "Ya tienes esa tarifa contratada")
+	            .addFlashAttribute("clase", "success");
 				return "redirect:/gimnasio/inicioSesion/tarifas";
 			}else if(!(t.getIdTarifa().equals(id)) && t.getIdUser().equals(usuario.getId()) && datosBancarios != null){
 				t.setIdTarifa(id);
@@ -226,7 +230,7 @@ public class InicioSesionUserController {
 	}
 	
 	@GetMapping("/apuntarseClase/{id}")
-	public String apuntarseClase(@PathVariable Integer id) {		
+	public String apuntarseClase(@PathVariable Integer id, RedirectAttributes redirectAttrs) {		
 		//comprobamos si el usuario tiene una tarifa contratada
 		boolean tieneTarifa = false;
 		List<BbddUsersTarifas> tarifasUsers = bbddUserTarifasRepository.findAll();
@@ -247,6 +251,9 @@ public class InicioSesionUserController {
 			for(BbddUsersClases c: bbddUserClases) {
 				//si ya esta apuntado a esa clase
 				if(c.getIdClase().equals(id) && c.getIdUser().equals(usuario.getId())) {
+					redirectAttrs
+		            .addFlashAttribute("mensaje", "Ya tienes esa clase contratada")
+		            .addFlashAttribute("clase", "success");
 					return "redirect:/gimnasio/inicioSesion/clasesUser";
 				}
 			}
@@ -255,6 +262,9 @@ public class InicioSesionUserController {
 			userClases = new BbddUsersClases();
 			return "redirect:/gimnasio/inicioSesion/misClases";
 		}else {
+			redirectAttrs
+            .addFlashAttribute("mensaje", "Primero tienes que escoger una tarifa e introducir un método de pago")
+            .addFlashAttribute("clase", "success");
 			return "redirect:/gimnasio/inicioSesion/clasesUser";
 		}	
 	}

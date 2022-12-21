@@ -28,11 +28,12 @@ public class FichaUser {
 	private String telefono;
 	private String email;
 	private String password;
+	private String passwordRepeat;
 	private Integer idDatosBancarios;
 	
 	
 	public FichaUser(Integer id, String nombre, String apellido, String sexo, String telefono, String email,
-			String password, Integer idDatosBancarios) { //Collection<Rol> roles
+			String password, String passwordRepeat, Integer idDatosBancarios) { //Collection<Rol> roles
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -41,11 +42,12 @@ public class FichaUser {
 		this.telefono = telefono;
 		this.email = email;
 		this.password = password;
+		this.passwordRepeat = passwordRepeat;
 		this.idDatosBancarios = idDatosBancarios;
 	}
 
 	public FichaUser(String nombre, String apellido, String sexo, String telefono, String email, 
-			String contraseña, Integer idDatosBancarios) {
+			String contraseña, String passwordRepeat, Integer idDatosBancarios) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -53,6 +55,7 @@ public class FichaUser {
 		this.telefono = telefono;
 		this.email = email;
 		this.password = contraseña;
+		this.passwordRepeat = passwordRepeat;
 		this.idDatosBancarios = idDatosBancarios;
 	}
 
@@ -117,6 +120,14 @@ public class FichaUser {
 		this.password = contraseña;
 	}
 	
+	public String getPasswordRepeat() {
+		return passwordRepeat;
+	}
+
+	public void setPasswordRepeat(String passwordRepeat) {
+		this.passwordRepeat = passwordRepeat;
+	}
+
 	public Integer getIdDatosBancarios() {
 		return idDatosBancarios;
 	}
