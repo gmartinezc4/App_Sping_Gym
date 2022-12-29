@@ -32,6 +32,9 @@ public class AppController {
 	@Autowired
 	private IClasesGymRepository clasesGymRepository;
 	
+	@Autowired
+	private ITarifasRepository tarifasGymRepository;
+	
 	@GetMapping("") //cuando yo llame a la raiz me muestra lo de aqui (raiz --> http:localhost:8080/gimnasio)
 	public String home() {	
 		return "home"; //nombre del archivo html que va a devolver
@@ -41,6 +44,12 @@ public class AppController {
 	public String verClases(Model model) {	
 		model.addAttribute("clasesGym", clasesGymRepository.findAll());
 		return "clasesGymBbdd"; //nombre del archivo html que va a devolver
+	} 
+	
+	@GetMapping("/tarifas") //cuando yo llame a la raiz me muestra lo de aqui (raiz --> http:localhost:8080/gimnasio)
+	public String verTarifas(Model model) {	
+		model.addAttribute("tarifa", tarifasGymRepository.findAll());
+		return "verTarifasUser"; //nombre del archivo html que va a devolver
 	} 
 
 }
